@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "esnext",                                
+    "rootDir": "./src",
+    "outDir": "./dist",  
+    "strict": true,
+    "moduleResolution": "bundler",
+    "target": "ES2023",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "ignoreDeprecations": "5.0"
+  },
+"include": ["src"],
+"exclude": ["node_modules", "dist"]
+}
