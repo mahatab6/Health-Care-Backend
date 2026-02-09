@@ -14,4 +14,4 @@ router.patch("/:id", SpecialtyController.updateSpecialties)
 
 
 
-export const SpecialtyRouter = router
+export const SpecialtyRoutes = router
