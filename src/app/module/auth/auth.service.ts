@@ -1,5 +1,6 @@
 import { UserStatus } from "../../../generated/prisma/enums";
 import { auth } from "../../lib/auth";
+import { prisma } from "../../lib/prisma";
 
 interface IRegisterPatiend {
   name: string;
@@ -9,7 +10,7 @@ interface IRegisterPatiend {
 
 interface ILogin {
   email: string;
-  password: string
+  password: string;
 }
 
 const registerPatient = async (payload: IRegisterPatiend) => {
@@ -23,40 +24,59 @@ const registerPatient = async (payload: IRegisterPatiend) => {
     },
   });
 
-  if(!data.user){
-    throw new Error("Faild to register patient")
+  if (!data.user) {
+    throw new Error("Faild to register patient");
   }
 
-  return data;
+  try {
+    const patiend = await prisma.$transaction(async (tx) => {
+      const patientTx = await tx.patient.create({
+        data: {
+          userId: data.user.id,
+          name: payload.name,
+          email: payload.email,
+        },
+      });
+
+      return patientTx;
+    });
+    return {
+      ...data,
+      patiend,
+    };
+  } catch (error) {
+    console.log("Transaction error", error);
+    await prisma.user.delete({
+      where: {
+        id: data.user.id,
+      },
+    });
+    throw error;
+  }
 };
 
-
-const loginPatient = async (payload: ILogin ) => {
+const loginPatient = async (payload: ILogin) => {
   const { email, password } = payload;
 
   const data = await auth.api.signInEmail({
     body: {
       email,
-      password
-    }
-  })
+      password,
+    },
+  });
 
-  if(data.user.status === UserStatus.BLOCKED){
-    throw new Error ("User is blocked")
+  if (data.user.status === UserStatus.BLOCKED) {
+    throw new Error("User is blocked");
   }
 
-  if(data.user.isDeleted || data.user.status === UserStatus.DELETED){
-    throw new Error ("User not found")
+  if (data.user.isDeleted || data.user.status === UserStatus.DELETED) {
+    throw new Error("User not found");
   }
 
-  return data
-}
-
-
-
-
+  return data;
+};
 
 export const authServices = {
-    registerPatient,
-    loginPatient
-}
+  registerPatient,
+  loginPatient,
+};
