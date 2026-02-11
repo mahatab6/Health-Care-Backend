@@ -24,7 +24,7 @@ model Doctor {
     upDatedAt DateTime @updatedAt
 
     userId      String               @unique
-    user        User                 @relation(fields: [userId], references: [id])
+    user        User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
     Specialties Doctor_specialties[]
 
     @@index([email], name: "idx_Doctor_Email")
