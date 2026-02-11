@@ -1,4 +1,6 @@
 import dotenv from "dotenv";
+import AppError from "../app/errorHelpers/AppError";
+import status from "http-status";
 
 dotenv.config();
 
@@ -21,7 +23,7 @@ const loadEnvVariables = (): EnvConfig => {
 
   requireEnvVariables.forEach((variable) => {
     if(!process.env[variable]){
-        throw new Error(`Environment veriable ${variable} is require but it not set`)
+        throw new AppError(status.INTERNAL_SERVER_ERROR, `Environment veriable ${variable} is require but it not set` )
     }
   })
 

@@ -8,5 +8,6 @@ export interface IErrorResponse {
   success: boolean;
   message: string;
   errorSources?: TErrorSources[];
+  stack?: string | undefined;
   error?: unknown;
 }
