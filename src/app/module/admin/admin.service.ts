@@ -11,6 +11,18 @@ const  getAllAdmin = async () => {
 }
 
 
+const getAdminById = async (id:string) => {
+    const result = await prisma.admin.findFirst({
+        where: {
+            id: id,
+            isDeleted: false
+        }
+    })
+    return result
+}
+
+
 export const adminService = {
-    getAllAdmin
+    getAllAdmin,
+    getAdminById
 }
