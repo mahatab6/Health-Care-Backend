@@ -6,9 +6,9 @@ import status from "http-status";
 
 
 
-const CreateDoctor = catchAsync(async(req:Request, res: Response) => {
+const createDoctor = catchAsync(async(req:Request, res: Response) => {
     const payload = req.body;
-    const result = await UserService.CreateDoctor(payload)
+    const result = await UserService.createDoctor(payload)
     sendResponse(res, {
         httpStatusCode: status.CREATED,
         success: true,
@@ -17,6 +17,30 @@ const CreateDoctor = catchAsync(async(req:Request, res: Response) => {
     })
 })
 
+const createAdmin = catchAsync(async(req:Request, res: Response) => {
+    const payload = req.body;
+    const result = await UserService.createAdmin(payload)
+    sendResponse(res, {
+        httpStatusCode: status.CREATED,
+        success: true,
+        message: "Admin created successfully",
+        data: result
+    })
+})
+
+const createSuperAdmin = catchAsync(async(req:Request, res: Response) => {
+    const payload = req.body;
+    const result = await UserService.createSuperAdmin(payload)
+    sendResponse(res, {
+        httpStatusCode: status.CREATED,
+        success: true,
+        message: "Super Admin created successfully",
+        data: result
+    })
+})  
+
 export const UserController = {
-    CreateDoctor
+    createDoctor,
+    createAdmin,
+    createSuperAdmin
 }
