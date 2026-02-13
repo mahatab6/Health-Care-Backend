@@ -1,3 +1,5 @@
+import status from "http-status";
+import AppError from "../../errorHelpers/AppError";
 import { prisma } from "../../lib/prisma"
 
 const getAllDoctor = async () => {
@@ -15,10 +17,24 @@ const getAllDoctor = async () => {
 const getDoctorById = async (id: string) => {
     const result = await prisma.doctor.findUnique({
         where: {
-            id: id
+            id: id,
+            isDeleted: false
+        },
+        include: {
+            Specialties: {
+                select: {
+                    specialty: true
+                }
+            }
         }
     })
-    return result;
+    if(!result){
+        throw new AppError(status.NOT_FOUND,"Doctor not found")
+    }
+    return {
+        ...result,
+        Specialties: result.Specialties.map(item => item.specialty)
+    };
 }
 
 
