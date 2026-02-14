@@ -7,17 +7,9 @@ import { tokenUtils } from "../../utils/token";
 import { jewUtils } from "../../utils/jwt";
 import { envVars } from "../../../config/env";
 import { JwtPayload } from "jsonwebtoken";
+import { IChangePassword, ILogin, IRegisterPatiend } from "./auth.interface";
 
-interface IRegisterPatiend {
-  name: string;
-  email: string;
-  password: string;
-}
 
-interface ILogin {
-  email: string;
-  password: string;
-}
 
 const registerPatient = async (payload: IRegisterPatiend) => {
   const { name, email, password } = payload;
@@ -201,8 +193,72 @@ const getNewAccessToken = async (
     }
 };
 
+const changePassword = async (payload:IChangePassword, sessionToken: string) => {
+  const session = await auth.api.getSession({
+    headers: {
+      Authorization: `Bearer ${sessionToken}`,
+    },
+  });
+
+  if(!session || !session.user) {
+    throw new AppError(status.UNAUTHORIZED, "Unauthorized access");
+  }
+
+  const { currentPassword, newPassword } = payload;
+
+  const isPasswordChanged = await auth.api.changePassword({
+    body: {
+      currentPassword,
+      newPassword,
+      revokeOtherSessions: true,
+    },
+    headers: {
+      Authorization: `Bearer ${sessionToken}`,
+    },
+  });
+
+  if(session.user.needPasswordChange) {
+    await prisma.user.update({
+      where: {
+        id: session.user.id,
+      },
+      data: {
+        needPasswordChange: false,
+      },
+    });
+  }
+
+   const accessToken = tokenUtils.getAccessToken({
+        userId: session.user.id,
+        role: session.user.role,
+        name: session.user.name,
+        email: session.user.email,
+        status: session.user.status,
+        isDeleted: session.user.isDeleted,
+        emailVerified: session.user.emailVerified,
+    });
+
+    const refreshToken = tokenUtils.getRefreshToken({
+        userId: session.user.id,
+        role: session.user.role,
+        name: session.user.name,
+        email: session.user.email,
+        status: session.user.status,
+        isDeleted: session.user.isDeleted,
+        emailVerified: session.user.emailVerified,
+    });
+    
+
+    return {
+      ...isPasswordChanged,
+      accessToken,
+      refreshToken,
+    };
+}
+
 export const authServices = {
   registerPatient,
   loginPatient,
-  getNewAccessToken
+  getNewAccessToken,
+  changePassword
 };
