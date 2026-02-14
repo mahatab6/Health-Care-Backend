@@ -3,6 +3,8 @@ import { catchAsync } from "../../shared/catchAsync";
 import { authServices } from "./auth.service";
 import { sendResponse } from "../../shared/sendResponse";
 import { tokenUtils } from "../../utils/token";
+import AppError from "../../errorHelpers/AppError";
+import status from "http-status";
 
 const registerPatient = catchAsync( async (req: Request, res: Response) => {
     const payload = req.body
@@ -49,9 +51,36 @@ const loginPatient = catchAsync ( async (req:Request, res: Response) => {
     })
 })
 
+const getNewAccessToken = catchAsync ( async (req:Request, res: Response) => { 
+    const refreshToken = req.cookies.refreshToken;
+    const betterAuthSessionToken = req.cookies["better-auth.session_token"];
+    if (!refreshToken) {
+        throw new AppError(status.BAD_REQUEST, "No refresh token provided");
+    }
 
+    const result = await authServices.getNewAccessToken(refreshToken, betterAuthSessionToken);
+
+    const { accessToken, refreshToken: newRefreshToken, sessionToken } = result;
+
+    tokenUtils.setAccessTokenCookie(res, accessToken);
+    tokenUtils.setRefreshTokenCookie(res, newRefreshToken);
+    tokenUtils.setBetterAuthCookie(res, sessionToken);
+
+    sendResponse(res, {
+        httpStatusCode: 200,
+        success: true,
+        message: "New access token generated successfully",
+        data: {
+            accessToken,
+            refreshToken: newRefreshToken,
+            sessionToken,
+        },
+    }); 
+
+})
 
 export const authController = {
     registerPatient,
-    loginPatient
+    loginPatient,
+    getNewAccessToken
 }

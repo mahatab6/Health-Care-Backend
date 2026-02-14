@@ -8,5 +8,7 @@ router.post('/register', authController.registerPatient)
 
 router.post('/login', authController.loginPatient)
 
+router.post('/refresh-token', authController.getNewAccessToken)
+
 
 export const AuthRoutes = router;

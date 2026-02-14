@@ -1,4 +1,5 @@
 import { prisma } from "../../lib/prisma"
+import { IAdmin } from "./admin.interface"
 
 
 const  getAllAdmin = async () => {
@@ -22,7 +23,31 @@ const getAdminById = async (id:string) => {
 }
 
 
+const updateAdmin = async (id:string, payload:IAdmin) => {
+    const result = await prisma.admin.update({
+        where: {
+            id: id
+        },
+        data: payload
+    })
+    return result
+}
+
+const adminDelete = async (id:string) => {
+    const result = await prisma.admin.update({
+        where: {
+            id: id
+        },
+        data: {
+            isDeleted: true
+        }
+    })
+    return result
+}
+
 export const adminService = {
     getAllAdmin,
-    getAdminById
+    getAdminById,
+    updateAdmin,
+    adminDelete
 }

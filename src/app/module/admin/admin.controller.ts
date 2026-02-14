@@ -25,7 +25,31 @@ const getAdminById = async (req:Request, res:Response) => {
     })
 }
 
+
+const updateAdmin = async (req:Request, res:Response) => {
+    const { id } = req.params;
+    const result = await adminService.updateAdmin(id as string, req.body)
+    res.status(status.OK).json({
+        success: true,
+        message: "Admin updated successfully",
+        data: result
+    })
+}
+
+
+const adminDelete = async (req:Request, res:Response) => {
+    const { id } = req.params;
+    const result = await adminService.adminDelete(id as string)
+    res.status(status.OK).json({
+        success: true,
+        message: "Admin deleted successfully",
+        data: result
+    })
+}   
+
 export const adminController = {
     getAllAdmin,
-    getAdminById
+    getAdminById,
+    updateAdmin,
+    adminDelete
 }

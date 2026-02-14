@@ -74,6 +74,12 @@ export const checkAuth =
           if (authRoles.length > 0 && !authRoles.includes(user.role)) {
             throw new AppError(status.FORBIDDEN, "Forbidden access!");
           }
+
+          req.user = {
+            userId: user.id,
+            email: user.email,
+            role: user.role,
+          };
         }
 
         const accessToken = cookieUtils.getCookie(req, "accessToken");
