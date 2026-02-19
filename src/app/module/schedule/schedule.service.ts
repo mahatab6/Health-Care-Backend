@@ -5,7 +5,7 @@ import { prisma } from "../../lib/prisma";
 import { IQueryParams } from "../../interface/query.interface";
 import { QueryBuilder } from "../../utils/QueryBuilder";
 import { Prisma, Schedule } from "../../../generated/prisma/client";
-import { scheduleSearchableFields, searchableFields } from "./schedule.constant";
+import { scheduleFilterableFields, scheduleIncludeConfig, scheduleSearchableFields } from "./schedule.constant";
 
 
 
@@ -72,18 +72,23 @@ const createSchedule = async (payload: ICreateSchedulePayload) => {
 }
 
 const getAllSchedules = async (query: IQueryParams) => {
-    const queryBuilder = new QueryBuilder<Schedule, Prisma.ScheduleWhereInput, Prisma.ScheduleInclude>(
+     const queryBuilder = new QueryBuilder<Schedule, Prisma.ScheduleWhereInput, Prisma.ScheduleInclude>(
         prisma.schedule,
         query,
         {
-            // searchableFields: searchableFields,
-            filterableFields: scheduleSearchableFields
+            searchableFields: scheduleSearchableFields,
+            filterableFields:scheduleFilterableFields
         }
     )
 
     const result = await queryBuilder
-        .search()
-        .execute()
+    .search()
+    .filter()
+    .paginate()
+    .dynamicInclude(scheduleIncludeConfig)
+    .sort()
+    .fields()
+    .execute();
 
     return result;
 
