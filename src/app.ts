@@ -8,8 +8,11 @@ import { auth } from "./app/lib/auth";
 import path from "node:path";
 import cors from "cors";
 import { envVars } from "./config/env";
+import { PaymentController } from "./app/module/payment/payment.controller";
 
 const app: Application = express()
+
+app.post("/webhook", express.raw({ type: "application/json" }), PaymentController.handleStripeWebhookEvent)
 
 app.use(cors({
     origin: [envVars.FRONTEND_URL, "http://localhost:3000"],
