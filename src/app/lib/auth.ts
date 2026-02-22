@@ -7,8 +7,8 @@ import { sendEmail } from "../utils/email";
 import { envVars } from "../../config/env";
 
 export const auth = betterAuth({
-    baseURL: envVars.BETTER_AUTH_URL,
-    secret: envVars.BETTER_AUTH_SECRET,
+  baseURL: envVars.BETTER_AUTH_URL,
+  secret: envVars.BETTER_AUTH_SECRET,
   database: prismaAdapter(prisma, {
     provider: "postgresql", // or "mysql", "postgresql", ...etc
   }),
@@ -18,23 +18,24 @@ export const auth = betterAuth({
   },
 
   socialProviders: {
-    google: { 
-        clientId: envVars.Client_ID,
-        clientSecret: envVars.Client_Secret,
-       
-        mapProfileToUser: () => {
-            return {
-                role: Role.PATIENT,
-                status: UserStatus.ACTIVE,
-                needPasswordChange: false,
-                isDeleted: false,
-                deletedAt: null,
-            }
-        }
-  }},
+    google: {
+      clientId: envVars.Client_ID,
+      clientSecret: envVars.Client_Secret,
 
-//   redirectURLs: {
-//     signIn:""},
+      mapProfileToUser: () => {
+        return {
+          role: Role.PATIENT,
+          status: UserStatus.ACTIVE,
+          needPasswordChange: false,
+          isDeleted: false,
+          deletedAt: null,
+        };
+      },
+    },
+  },
+
+  //   redirectURLs: {
+  //     signIn:""},
 
   emailVerification: {
     sendOnSignUp: true,
@@ -72,7 +73,7 @@ export const auth = betterAuth({
     },
   },
   trustedOrigins: [process.env.BETTER_AUTH_URL || "http://localhost:5000"],
-  
+
   session: {
     expiresIn: 60 * 60 * 60 * 24, // 1 day in seconds
     updateAge: 60 * 60 * 60 * 24, // 1 day in seconds
@@ -93,6 +94,20 @@ export const auth = betterAuth({
               email: email,
             },
           });
+
+          if (!user) {
+            console.error(
+              `User with email ${email} not found. Cannot send verification OTP.`,
+            );
+            return;
+          }
+
+          if (user && user.role === Role.SUPER_ADMIN) {
+            console.log(
+              `User with email ${email} is a super admin. Skipping sending verification OTP.`,
+            );
+            return;
+          }
 
           if (user && !user.emailVerified) {
             sendEmail({
@@ -135,22 +150,22 @@ export const auth = betterAuth({
     // disableCSRFCheck: true,
     useSecureCookies: false,
     cookies: {
-        state: {
-            attributes: {
-                sameSite: "none",
-                secure: true,
-                httpOnly: true,
-                path: "/",
-            },
+      state: {
+        attributes: {
+          sameSite: "none",
+          secure: true,
+          httpOnly: true,
+          path: "/",
         },
-        sessionToken: {
-            attributes: {
-                sameSite: "none",
-                secure: true,
-                httpOnly: true,
-                path: "/",
-            },
+      },
+      sessionToken: {
+        attributes: {
+          sameSite: "none",
+          secure: true,
+          httpOnly: true,
+          path: "/",
         },
+      },
     },
   },
 });
