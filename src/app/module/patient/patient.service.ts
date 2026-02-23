@@ -1,3 +1,5 @@
+
+import { deleteFileFromCloudinary } from "../../../config/cloudinary.config";
 import { IRequestUser } from "../../interface/requestUser.interface";
 import { prisma } from "../../lib/prisma";
 import {
@@ -22,6 +24,7 @@ const updateProfile = async (
   });
 
   await prisma.$transaction(async (tx) => {
+
     if (payload.patientInfo) {
       await tx.patient.update({
         where: {
@@ -94,7 +97,9 @@ const updateProfile = async (
             },
           });
 
-          // if(deleteReport.reportLink)
+          if(deleteReport.reportLink){
+            await deleteFileFromCloudinary(deleteReport.reportLink)
+          }
         } else if (report.reportName && report.reportLink) {
           await tx.medicalReport.create({
             data: {
