@@ -7,23 +7,23 @@ export interface IUpdatePatientInfoPayload {
   address?: string;
 }
 
-export interface IUpdatePatientHealthDataPayload {
-  gender?: Gender;
-  dateOfBirth?: Date;
-  bloodGroup?: BloodGroup;
-  hasAllergies?: Boolean;
-  hasDiabetes?: Boolean;
-  height?: String;
-  weight?: String;
-  smokingStatus?: Boolean;
-  dietaryPreferences?: String;
-  pregnancyStatus?: Boolean;
-  mentalHealthHistory?: String;
-  immunizationStatus?: String;
-  hasPastSurgeries?: Boolean;
-  recentAnxiety?: Boolean;
-  recentDepression?: Boolean;
-  maritalStatus?: String;
+export interface IUpdatePatientHealthDataPayload{
+    gender: Gender;
+    dateOfBirth: Date;
+    bloodGroup: BloodGroup;
+    hasAllergies: boolean;
+    hasDiabetes: boolean;
+    height: string;
+    weight: string;
+    smokingStatus: boolean;
+    dietaryPreference?: string;
+    pregnancyStatus: boolean;
+    mentalHealthHistory?: string;
+    immunizationStatus?: string;
+    hasPastSurgeries: boolean;
+    recentAnxiety: boolean;
+    recentDepression: boolean;
+    maritalStatus?: string;
 }
 
 export interface IUpdatePatientMedicalDataPayload {
@@ -31,4 +31,11 @@ export interface IUpdatePatientMedicalDataPayload {
   reportLink?: string;
   shouldDelete?: boolean;
   reportId?: string;
+}
+
+
+export interface IUpdatePatientData {
+  patientInfo: IUpdatePatientInfoPayload
+  patientHealthData: IUpdatePatientHealthDataPayload
+  medicalReports: IUpdatePatientMedicalDataPayload[]
 }
