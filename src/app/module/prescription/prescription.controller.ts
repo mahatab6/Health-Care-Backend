@@ -3,10 +3,11 @@ import httpStatus from 'http-status';
 import { catchAsync } from '../../shared/catchAsync';
 import { sendResponse } from '../../shared/sendResponse';
 import { PrescriptionService } from './prescription.service';
+import { IRequestUser } from '../../interface/requestUser.interface';
 
 const givePrescription = catchAsync(async (req: Request, res: Response) => {
     const payload = req.body;
-    const user = req.user;
+    const user = req.user as IRequestUser;
     const result = await PrescriptionService.givePrescription(user, payload);
     sendResponse(res, {
         httpStatusCode: httpStatus.OK,
@@ -17,7 +18,7 @@ const givePrescription = catchAsync(async (req: Request, res: Response) => {
 });
 
 const myPrescriptions = catchAsync(async (req: Request, res: Response) => {
-    const user = req.user;
+    const user = req.user as IRequestUser;
     const result = await PrescriptionService.myPrescriptions(user);
     sendResponse(res, {
         httpStatusCode: httpStatus.OK,
@@ -38,7 +39,7 @@ const getAllPrescriptions = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updatePrescription = catchAsync(async (req: Request, res: Response) => {
-    const user = req.user;
+    const user = req.user as IRequestUser;
     const prescriptionId = req.params.id;
     const payload = req.body;
     const result = await PrescriptionService.updatePrescription(user, prescriptionId as string, payload);
@@ -52,7 +53,7 @@ const updatePrescription = catchAsync(async (req: Request, res: Response) => {
 });
 
 const deletePrescription = catchAsync(async (req: Request, res: Response) => {
-    const user = req.user;
+    const user = req.user as IRequestUser;
     const prescriptionId = req.params.id;
     await PrescriptionService.deletePrescription(user, prescriptionId as string);
 
