@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { adminService } from "./admin.service";
 import status from "http-status";
+import { IRequestUser } from "../../interface/requestUser.interface";
+import { IChangeUserRolePayload, IChangeUserStatusPayload } from "./admin.interface";
 
 
 
@@ -46,10 +48,32 @@ const adminDelete = async (req:Request, res:Response) => {
         data: result
     })
 }   
+const changeUserStatus = async (req:Request, res:Response) => {
+    const user = req.user as IRequestUser;
+    const payload = req.body as IChangeUserStatusPayload
+    const result = await adminService.changeUserStatus(user, payload)
+    res.status(status.OK).json({
+        success: true,
+        message: "Admin deleted successfully",
+        data: result
+    })
+}   
+const changeUserRole = async (req:Request, res:Response) => {
+    const user = req.user as IRequestUser;
+    const payload = req.body as IChangeUserRolePayload
+    const result = await adminService.changeUserRole(user, payload)
+    res.status(status.OK).json({
+        success: true,
+        message: "Admin deleted successfully",
+        data: result
+    })
+}   
 
 export const adminController = {
     getAllAdmin,
     getAdminById,
     updateAdmin,
-    adminDelete
+    adminDelete,
+    changeUserRole,
+    changeUserStatus
 }
