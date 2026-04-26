@@ -9,6 +9,7 @@ import { jewUtils } from "../../utils/jwt";
 import { envVars } from "../../../config/env";
 import { JwtPayload } from "jsonwebtoken";
 import { IChangePassword, ILogin, IRegisterPatiend } from "./auth.interface";
+import { IRequestUser } from "../../interface/requestUser.interface";
 
 
 
@@ -16,13 +17,13 @@ import { IChangePassword, ILogin, IRegisterPatiend } from "./auth.interface";
 const registerPatient = async (payload: IRegisterPatiend) => {
   const { name, email, password } = payload;
 
-  const data = await auth.api.signUpEmail({
-    body: {
-      name,
-      email,
-      password,
-    },
-  });
+ const data = await auth.api.signUpEmail({
+  body: {
+    name,
+    email,
+    password,
+  }
+});
 
   if (!data.user) {
     throw new AppError(
@@ -32,7 +33,7 @@ const registerPatient = async (payload: IRegisterPatiend) => {
   }
 
   try {
-    const patiend = await prisma.$transaction(async (tx) => {
+    const patient = await prisma.$transaction(async (tx) => {
       const patientTx = await tx.patient.create({
         data: {
           userId: data.user.id,
@@ -69,7 +70,7 @@ const registerPatient = async (payload: IRegisterPatiend) => {
       accessToken,
       token: data.token,
       refreshToken,
-      patiend,
+      patient,
     };
   } catch (error) {
     console.log("Transaction error", error);
@@ -409,6 +410,20 @@ const goolgeLoginSuccess = async (session: Record<string, any>) => {
   }
 }
 
+const getMe = async (user : IRequestUser) => {
+    const isUserExists = await prisma.user.findUnique({
+        where : {
+            id : user.userId,
+        },
+    })
+
+    if (!isUserExists) {
+        throw new AppError(status.NOT_FOUND, "User not found");
+    }
+
+    return isUserExists;
+}
+
 export const authServices = {
   registerPatient,
   loginPatient,
@@ -419,4 +434,5 @@ export const authServices = {
   forgetPassword,
   resetPassword,
   goolgeLoginSuccess,
+  getMe
 };

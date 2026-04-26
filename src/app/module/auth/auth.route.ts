@@ -23,8 +23,12 @@ router.post('/forget-password', authController.forgetPassword)
 router.post('/reset-password', authController.resetPassword)
 
 router.get('/login/google', authController.googleLogin)
+
 router.get('/google/success', authController.goolgeLoginSuccess)
+
 router.get('/oauth/error', authController.handleOAuthError)
+
+router.get("/me", checkAuth(Role.ADMIN, Role.DOCTOR, Role.PATIENT, Role.SUPER_ADMIN), authController.getMe)
 
 
 export const AuthRoutes = router;

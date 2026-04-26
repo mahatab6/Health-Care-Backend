@@ -11,6 +11,7 @@ import { envVars } from "./config/env";
 import { PaymentController } from "./app/module/payment/payment.controller";
 import cron from 'node-cron'
 import { AppointmentService } from "./app/module/appointment/appointment.service";
+import { requestLogger } from "./app/middleware/requestLogger";
 
 const app: Application = express()
 
@@ -30,6 +31,8 @@ app.post("/webhook", express.raw({ type: "application/json" }), PaymentControlle
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+
+app.use(requestLogger);
 
 // Enable URL-encoded form data parsing
 app.use(express.urlencoded({ extended: true }));

@@ -8,6 +8,7 @@ import status from "http-status";
 import { cookieUtils } from "../../utils/cookie";
 import { envVars } from "../../../config/env";
 import { auth } from "../../lib/auth";
+import { IRequestUser } from "../../interface/requestUser.interface";
 
 const registerPatient = catchAsync( async (req: Request, res: Response) => {
     const payload = req.body
@@ -200,6 +201,19 @@ const handleOAuthError = catchAsync ( async (req:Request, res: Response) => {
     res.redirect(`${envVars.FRONTEND_URL}/login?error=${error}`);
 }) 
 
+const getMe = catchAsync(
+    async (req: Request, res: Response) => {
+        const user = req.user as IRequestUser;
+        const result = await authServices.getMe(user);
+        sendResponse(res, {
+            httpStatusCode: status.OK,
+            success: true,
+            message: "User profile fetched successfully",
+            data: result,
+        })
+    }
+)
+
 export const authController = {
     registerPatient,
     loginPatient,
@@ -211,5 +225,6 @@ export const authController = {
     resetPassword,
     googleLogin,
     goolgeLoginSuccess,
-    handleOAuthError
+    handleOAuthError,
+    getMe
 }
