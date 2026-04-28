@@ -1,1 +1,16 @@
 {"timestamp":"2026-04-19T04:50:40.990Z","method":"POST","endpoint":"/api/v1/auth/login","statusCode":200,"responseTimeMs":1221.68,"ip":"::1","userAgent":"PostmanRuntime/7.51.1"}
+{"timestamp":"2026-04-28T03:15:35.870Z","method":"POST","endpoint":"/api/v1/auth/login","statusCode":200,"responseTimeMs":1273.33,"ip":"::1","userAgent":"PostmanRuntime/7.51.1"}
+{"timestamp":"2026-04-28T03:16:30.484Z","method":"POST","endpoint":"/api/v1/specialties","statusCode":201,"responseTimeMs":465.61,"ip":"::1","userAgent":"PostmanRuntime/7.51.1"}
+{"timestamp":"2026-04-28T03:23:06.077Z","method":"POST","endpoint":"/api/v1/auth/login","statusCode":500,"responseTimeMs":3546.28,"ip":"::1","userAgent":"PostmanRuntime/7.51.1"}
+{"timestamp":"2026-04-28T03:23:39.774Z","method":"POST","endpoint":"/api/v1/users/create-doctor","statusCode":201,"responseTimeMs":2464.35,"ip":"::1","userAgent":"PostmanRuntime/7.51.1"}
+{"timestamp":"2026-04-28T03:25:06.323Z","method":"GET","endpoint":"/api/v1/doctors","statusCode":200,"responseTimeMs":561.33,"ip":"::1","userAgent":"PostmanRuntime/7.51.1"}
+{"timestamp":"2026-04-28T03:27:39.764Z","method":"POST","endpoint":"/api/v1/rag/ingest-docters","statusCode":200,"responseTimeMs":4609.63,"ip":"::1","userAgent":"PostmanRuntime/7.51.1"}
+{"timestamp":"2026-04-28T03:31:26.568Z","method":"POST","endpoint":"/api/v1/rag/ingest-docters","statusCode":200,"responseTimeMs":3690.23,"ip":"::1","userAgent":"PostmanRuntime/7.51.1"}
+{"timestamp":"2026-04-28T03:36:40.594Z","method":"POST","endpoint":"/api/v1/rag/ingest-docters","statusCode":500,"responseTimeMs":3056.94,"ip":"::1","userAgent":"PostmanRuntime/7.51.1"}
+{"timestamp":"2026-04-28T03:39:30.854Z","method":"POST","endpoint":"/api/v1/rag/ingest-docters","statusCode":500,"responseTimeMs":2465.8,"ip":"::1","userAgent":"PostmanRuntime/7.51.1"}
+{"timestamp":"2026-04-28T05:01:14.372Z","method":"POST","endpoint":"/api/v1/auth/login","statusCode":200,"responseTimeMs":2483.18,"ip":"::1","userAgent":"PostmanRuntime/7.51.1"}
+{"timestamp":"2026-04-28T05:01:29.734Z","method":"POST","endpoint":"/api/v1/specialties","statusCode":201,"responseTimeMs":451.8,"ip":"::1","userAgent":"PostmanRuntime/7.51.1"}
+{"timestamp":"2026-04-28T05:01:52.025Z","method":"POST","endpoint":"/api/v1/users/create-doctor","statusCode":201,"responseTimeMs":1869.77,"ip":"::1","userAgent":"PostmanRuntime/7.51.1"}
+{"timestamp":"2026-04-28T05:03:02.075Z","method":"GET","endpoint":"/api/v1/doctors","statusCode":200,"responseTimeMs":530.76,"ip":"::1","userAgent":"PostmanRuntime/7.51.1"}
+{"timestamp":"2026-04-28T05:03:20.132Z","method":"POST","endpoint":"/api/v1/rag/ingest-docters","statusCode":500,"responseTimeMs":2161.2,"ip":"::1","userAgent":"PostmanRuntime/7.51.1"}
+{"timestamp":"2026-04-28T05:08:12.713Z","method":"POST","endpoint":"/api/v1/rag/ingest-docters","statusCode":200,"responseTimeMs":1726.78,"ip":"::1","userAgent":"PostmanRuntime/7.51.1"}
