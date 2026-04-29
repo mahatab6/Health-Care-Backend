@@ -7,7 +7,14 @@ import { RAGService } from "./rag.service";
 const ragService = new RAGService();
 
 const getStats = catchAsync(async (req: Request, res: Response) => {
-  console.log("connected");
+  const result = await ragService.getStats();
+
+  sendResponse(res, {
+    success: true,
+    httpStatusCode: status.OK,
+    message: "RAG stats retrieved successfully",
+    data: result,
+  });
 });
 
 const ingestDoctors = catchAsync(async (req: Request, res: Response) => {
@@ -21,9 +28,7 @@ const ingestDoctors = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-
 const queryRag = catchAsync(async (req: Request, res: Response) => {
-
   const { query, limit, sourceType } = req.body;
 
   if (!query) {
@@ -34,7 +39,7 @@ const queryRag = catchAsync(async (req: Request, res: Response) => {
     });
   }
 
-   const result = await ragService.generateAnswer(
+  const result = await ragService.generateAnswer(
     query,
     limit ?? 5,
     sourceType,
@@ -52,5 +57,5 @@ const queryRag = catchAsync(async (req: Request, res: Response) => {
 export const RagController = {
   getStats,
   ingestDoctors,
-  queryRag
+  queryRag,
 };

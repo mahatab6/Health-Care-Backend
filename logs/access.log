@@ -15,3 +15,5 @@
 {"timestamp":"2026-04-28T05:03:20.132Z","method":"POST","endpoint":"/api/v1/rag/ingest-docters","statusCode":500,"responseTimeMs":2161.2,"ip":"::1","userAgent":"PostmanRuntime/7.51.1"}
 {"timestamp":"2026-04-28T05:08:12.713Z","method":"POST","endpoint":"/api/v1/rag/ingest-docters","statusCode":200,"responseTimeMs":1726.78,"ip":"::1","userAgent":"PostmanRuntime/7.51.1"}
 {"timestamp":"2026-04-28T06:40:57.155Z","method":"POST","endpoint":"/api/v1/rag/query","statusCode":200,"responseTimeMs":6777.61,"ip":"::1","userAgent":"PostmanRuntime/7.51.1"}
+{"timestamp":"2026-04-29T05:39:04.031Z","method":"GET","endpoint":"/api/v1/rag/stats","statusCode":400,"responseTimeMs":263.58,"ip":"::1","userAgent":"PostmanRuntime/7.51.1"}
+{"timestamp":"2026-04-29T05:40:24.487Z","method":"GET","endpoint":"/api/v1/rag/stats","statusCode":200,"responseTimeMs":158.18,"ip":"::1","userAgent":"PostmanRuntime/7.51.1"}

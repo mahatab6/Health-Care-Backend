@@ -15,6 +15,33 @@ export class RAGService {
     this.llmService = new LLMService();
   }
 
+  async getStats() {
+    try {
+      const totalDocuments = await prisma.$queryRaw(Prisma.sql`
+        SELECT COUNT(*) as count FROM "DocumentEmbedding" WHERE "isDeleted" = false;
+        `);
+
+      const sourceTypeCounts = await prisma.$queryRaw(Prisma.sql`
+        SELECT "sourceType", COUNT(*) as count FROM "DocumentEmbedding" WHERE "isDeleted" = false GROUP BY "sourceType"
+        `);
+
+      return {
+        totalActiveDocuments: Number((totalDocuments as any)[0]?.count ?? 0),
+        sourceTypeBreakdown: (sourceTypeCounts as any).reduce(
+          (acc: any, curr: any) => {
+            acc[curr.sourceType] = Number(curr.count);
+            return acc;
+          },
+          {},
+        ),
+        timestamp: new Date(),
+      };
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
   async ingestDoctorsData() {
     return this.indexingService.indexDoctorData();
   }
